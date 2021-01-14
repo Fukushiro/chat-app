@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block titulo %}
+    home
+{% endblock titulo %}
+
+{% block conteudo %}
+    <ul>
+        {% for conversa in conversas %}
+            <li><a href="{% url 'conversa' conversa.id %}">
+                
+                {% if user == conversa.usuario1 %}
+                    {{conversa.usuario2}}
+                {% else %}
+                    {{conversa.usuario1}}
+                {% endif %}
+                    
+            </a></li>
+        {% endfor %}
+    </ul>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="nome" id="" placeholder="Nome do usuario">
+        <input type="submit" value="Conversar">
+    </form>
+{% endblock conteudo %}
+
+

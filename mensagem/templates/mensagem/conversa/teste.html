@@ -1,0 +1,14 @@
+{% for mensagem in mensagens %}
+            <div style ="border:1px solid black; width:50%;margin-top:50px;
+            {% if user == mensagem.usuario %}
+                align-self:flex-end; 
+                background-color:green;
+            {% else %}
+                background-color:red;      
+            {% endif %}">
+                <p style ="word-break: break-all; 
+                    
+                    
+                ">{{mensagem.texto}}</p>
+            </div>
+       {% endfor %}
