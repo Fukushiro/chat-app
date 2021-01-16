@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup.apps.CleanupConfig',
     'user',
     'mensagem',
 ]
@@ -129,3 +130,6 @@ AUTHENTICATION_BACKENDS = ['user.custom_auth_back.Backend']
 REFERRER_POLICY = 'origin'
 
 django_heroku.settings(locals())
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
+MEDIA_URL = '/media/'

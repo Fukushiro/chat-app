@@ -11,4 +11,20 @@ class MensagemForm(ModelForm):
 
     class Meta:
         model = Mensagem
-        fields = ['texto']
+        fields = ['texto', 'imagem']
+
+
+        widgets = {
+            'texto' : forms.TextInput(attrs={
+                'id' : 'texto_field',
+                'placeholder' :'mensagem',
+            }),
+        }
+    def __init__(self, *args, **kwargs):
+        super(MensagemForm, self).__init__(*args, **kwargs)
+        # self.fields['texto'].widget = forms.TextInput(attrs={
+        #     'id' : 'texto_field',
+        #     'placeholder' :'mensagem',
+        # })
+    
+        

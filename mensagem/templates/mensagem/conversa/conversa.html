@@ -7,25 +7,12 @@
 {% block conteudo %}
     <a href="{% url 'home' %}"><--Voltar</a>
     <div id="div" style=" border:1px solid black;margin-top:100px; overflow : auto; height : 500px;display:flex;flex-direction:column; ">
-       {% for mensagem in mensagens %}
-            <div style ="border:1px solid black; width:50%;margin-top:50px;
-            {% if user == mensagem.usuario %}
-                align-self:flex-end; 
-                background-color:green;
-            {% else %}
-                background-color:red;      
-            {% endif %}">
-                <p style ="word-break: break-all; 
-                    
-                    
-                ">{{mensagem.texto}}</p>
-            </div>
-       {% endfor %}
+       {% include 'mensagem/conversa/teste.html' %}
     </div>
 
-     <form action="" method='post' id="form">
+     <form action="" method='post' id="form" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="text" id="texto_field" name="texto">
+        {{form}}
         <input id="botao" type="submit" value="Enviar">
     </form> 
     
@@ -38,20 +25,40 @@
     <script>
 
         $('#form').submit(function () {
+            
+            
+            
             return false;
         });
         var element = document.getElementById("div");
         element.scrollTop = element.scrollHeight;
 
-        $(document).ready(function() { /// Wait till page is loaded
+        $(document).ready(function() { 
             $('#botao').click(function(){
                 var elemento_texto = document.getElementById('texto_field');
-                var texto = elemento_texto.value;
+                options = {
+                url: '{% url "conversa_mensagem_post" conversa.id %}',
+                type: 'POST',
+                success: function(data) {
+                        $('#div').html(data);
+                        document.getElementById('id_imagem').value = "";
+                        element.scrollTop = element.scrollHeight;
+                        elemento_texto.value = "";
+                    }
+                };
 
+                $('#form').ajaxSubmit(options);
+            });
+            /*$('#botao').click(function(){
+                var elemento_texto = document.getElementById('texto_field');
+                var texto = elemento_texto.value;
+                
                 $.ajax({
                     url: '{% url "conversa_mensagem" conversa.id %}',
+                    type : "GET",
                     data: {
                         'texto' : texto,
+                        'mensagem' : imagem_field.value,
                         'inserir' : true,
                     },
                     success: function (data) {
@@ -61,12 +68,12 @@
                     }
                 });
 
-            });
+            });*/
             
             function loopF(){
                  $.ajax({
                     url: '{% url "conversa_mensagem" conversa.id %}', 
-                    
+                    type:"GET",
                     data : {
                         'inserir' : false,
                         'texto' : '',

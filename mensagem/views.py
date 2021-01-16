@@ -19,9 +19,10 @@ from mensagem.forms import (
 def home(request):
 
     if request.method == 'POST':
-        usuario = User.objects.get(username=request.POST['nome'])
-        conversa = Conversa(usuario1 = request.user, usuario2 = usuario)
-        conversa.save()
+        if User.objects.filter(username=request.POST['nome']).count() > 0:
+            usuario = User.objects.get(username=request.POST['nome'])
+            conversa = Conversa(usuario1 = request.user, usuario2 = usuario)
+            conversa.save()
         return redirect('home')
 
     user = request.user
@@ -40,8 +41,20 @@ def conversa(request, idConversa):
 
     
     if request.method == 'POST':
-        mensagem = Mensagem(conversa=conversa, usuario=request.user, data = datetime.datetime.now(), texto=request.POST['texto'])
-        mensagem.save()
+        print(request.FILES)
+        
+        mensagem_form = MensagemForm(request.POST or None, request.FILES or None)
+
+        if mensagem_form.is_valid():
+            m = mensagem_form.save(commit=False)
+            m.conversa = conversa
+            m.usuario = request.user
+            m.data = datetime.datetime.now()
+
+
+            m.save()
+        #mensagem = Mensagem(conversa=conversa, usuario=request.user, data = datetime.datetime.now(), texto=request.POST['texto'], request.FILES or None)
+        #mensagem.save()
         return redirect('conversa', idConversa)
     form = MensagemForm()
     mensagens = Mensagem.objects.filter(conversa=conversa)
@@ -57,12 +70,48 @@ def conversa(request, idConversa):
     return render(request, 'mensagem/conversa/conversa.html', c)
 
 
-def conversa_mensagem(request, conversa_id):
+def conversa_mensagem(request, conversa_id):#refresh
     conversa = Conversa.objects.get(id=conversa_id)
-    if request.GET['inserir'] == 'true':
-        print('foi')
-        mensagem = Mensagem(conversa=conversa, usuario=request.user, data = datetime.datetime.now(), texto=request.GET['texto'])
-        mensagem.save()
+    
+    # if request.GET['inserir'] == 'true':
+    #     print(request.GET)
+    #     mensagem_form = MensagemForm(request.GET or None, request.FILES or None)
+
+    #     if mensagem_form.is_valid():
+    #         m = mensagem_form.save(commit=False)
+    #         m.conversa = conversa
+    #         m.usuario = request.user
+    #         m.data = datetime.datetime.now()
+
+
+    #         m.save()
+        #mensagem = Mensagem(conversa=conversa, usuario=request.user, data = datetime.datetime.now(), texto=request.GET['texto'])
+        #mensagem.save()
+
+    mensagens = Mensagem.objects.filter(conversa=conversa)
+    c = {
+        'mensagens' : mensagens,
+    }
+    
+    return render(request, 'mensagem/conversa/teste.html', c)
+
+def conversa_mensagem_post(request, conversa_id):#enviar msg
+    conversa = Conversa.objects.get(id=conversa_id)
+    
+    
+    print(request.POST)
+    mensagem_form = MensagemForm(request.POST or None, request.FILES or None)
+
+    if mensagem_form.is_valid():
+        m = mensagem_form.save(commit=False)
+        m.conversa = conversa
+        m.usuario = request.user
+        m.data = datetime.datetime.now()
+
+
+        m.save()
+        #mensagem = Mensagem(conversa=conversa, usuario=request.user, data = datetime.datetime.now(), texto=request.GET['texto'])
+        #mensagem.save()
 
     mensagens = Mensagem.objects.filter(conversa=conversa)
     c = {

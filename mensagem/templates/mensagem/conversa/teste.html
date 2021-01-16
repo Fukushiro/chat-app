@@ -6,6 +6,9 @@
             {% else %}
                 background-color:red;      
             {% endif %}">
+                {% if mensagem.imagem.url != '' %}
+                    <img src="{{mensagem.imagem.url}}" alt="" width="100%">
+                {% endif %}
                 <p style ="word-break: break-all; 
                     
                     

@@ -8,6 +8,11 @@ class Conversa(models.Model):
 
 class Mensagem(models.Model):
     conversa = models.ForeignKey(Conversa ,  on_delete=models.CASCADE)
+    imagem = models.ImageField(upload_to='mensagem/imagens', height_field=None, width_field=None, max_length=None, null=True, blank=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     data = models.DateTimeField(auto_now=False, auto_now_add=False)
-    texto = models.CharField(max_length=250)
+    texto = models.CharField(max_length=250) 
+
+
+    
+    
