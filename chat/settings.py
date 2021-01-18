@@ -28,7 +28,7 @@ SECRET_KEY = 'a-gfd+t9@0ivpdt@6wn^_g2^pq#brklkdbixyq0ier%)94tx!3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://chatapp312.herokuapp.com/', 'localhost']
+ALLOWED_HOSTS = ['https://chatapp312.herokuapp.com/', 'https://localhost']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
+    'storages',
     'user',
     'mensagem',
 ]
@@ -123,7 +124,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    '/var/www/static/',
+]
 
 AUTHENTICATION_BACKENDS = ['user.custom_auth_back.Backend']
 
@@ -133,3 +137,13 @@ django_heroku.settings(locals())
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media') 
 MEDIA_URL = '/media/'
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+
+AWS_ACCESS_KEY_ID = 'AKIAIOOQA4L4XIIBVDJQ'
+
+AWS_SECRET_ACCESS_KEY = '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'
+
+AWS_STORAGE_BUCKET_NAME = 'chatapp312'

@@ -99,7 +99,6 @@ def conversa_mensagem_post(request, conversa_id):#enviar msg
     conversa = Conversa.objects.get(id=conversa_id)
     
     
-    print(request.POST)
     mensagem_form = MensagemForm(request.POST or None, request.FILES or None)
 
     if mensagem_form.is_valid():

@@ -6,7 +6,7 @@
 
 {% block conteudo %}
     <a href="{% url 'home' %}"><--Voltar</a>
-    <div id="div" style=" border:1px solid black;margin-top:100px; overflow : auto; height : 500px;display:flex;flex-direction:column; ">
+    <div id="div" style=" border:1px solid black;margin-top:50px; overflow : auto; height : 650px;display:flex;flex-direction:column; ">
        {% include 'mensagem/conversa/teste.html' %}
     </div>
 
@@ -14,14 +14,12 @@
         {% csrf_token %}
         {{form}}
         <input id="botao" type="submit" value="Enviar">
+        <button id="refresh_btn">Refresh</button>
+        
     </form> 
     
 
-    <div id="main">
-        
-    </div>
-
-    <a id="detailed">click</a>
+   
     <script>
 
         $('#form').submit(function () {
@@ -31,18 +29,23 @@
             return false;
         });
         var element = document.getElementById("div");
-        element.scrollTop = element.scrollHeight;
+        setTimeout(function(){
+            element.scrollTop = element.scrollHeight;
+        }, 1 * 1000);
 
         $(document).ready(function() { 
             $('#botao').click(function(){
                 var elemento_texto = document.getElementById('texto_field');
                 options = {
-                url: '{% url "conversa_mensagem_post" conversa.id %}',
-                type: 'POST',
-                success: function(data) {
+                    url: '{% url "conversa_mensagem_post" conversa.id %}',
+                    type: 'POST',
+                    success: function(data) {
+                        
                         $('#div').html(data);
                         document.getElementById('id_imagem').value = "";
-                        element.scrollTop = element.scrollHeight;
+                        setTimeout(function(){
+                            element.scrollTop = element.scrollHeight;
+                        }, 1 * 1000);
                         elemento_texto.value = "";
                     }
                 };
@@ -79,15 +82,26 @@
                         'texto' : '',
                     },
                     success: function(data) {
+                        
                         $('#div').html(data);
+                        setTimeout(function(){
+                            element.scrollTop = element.scrollHeight;
+                        }, 1 * 1000);
+                        
+                        
+                        
+                        
                     },
                     complete: function() {
                     // Schedule the next request when the current one's complete
-                    setTimeout(loopF, 1000);
+                    //setTimeout(loopF, 1000);
                     }
                 });
             }
-            loopF();
+            $('#refresh_btn').click(function(){
+                
+                loopF();
+            });
         });
         
     </script>
