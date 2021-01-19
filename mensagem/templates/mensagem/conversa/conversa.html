@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load js %}
 {% block titulo %}
     conversa
 {% endblock titulo %}
@@ -73,7 +73,7 @@
 
             });*/
             
-            function loopF(){
+            function ref(){
                  $.ajax({
                     url: '{% url "conversa_mensagem" conversa.id %}', 
                     type:"GET",
@@ -84,9 +84,7 @@
                     success: function(data) {
                         
                         $('#div').html(data);
-                        setTimeout(function(){
-                            element.scrollTop = element.scrollHeight;
-                        }, 1 * 1000);
+                        
                         
                         
                         
@@ -100,8 +98,37 @@
             }
             $('#refresh_btn').click(function(){
                 
-                loopF();
+                ref();
             });
+            var ultimo = {{ultima_msg_id | js}};
+            function loopF(){
+                
+                 $.ajax({
+                    url: '{% url "conversa_mensagem_json" conversa.id %}', 
+                    type:"GET",
+                    data : {
+                        'inserir' : false,
+                        'texto' : '',
+                        'ultimo' : ultimo,
+                        
+                    },
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        if(data["e"] == true){
+                            ref();
+                            ultimo = data['ultimo'];
+                        }
+                        
+                        
+                    },
+                    complete: function() {
+                    // Schedule the next request when the current one's complete
+                        setTimeout(loopF, 1000);
+                    }
+                });
+            }
+
+            loopF();
         });
         
     </script>
