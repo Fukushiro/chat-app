@@ -139,11 +139,11 @@ MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 
-AWS_ACCESS_KEY_ID = 'AKIAIOOQA4L4XIIBVDJQ'
+# AWS_ACCESS_KEY_ID = 'AKIAIOOQA4L4XIIBVDJQ'
 
-AWS_SECRET_ACCESS_KEY = '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'
+# AWS_SECRET_ACCESS_KEY = 'qPQpHy49+DhXegBINXqdequPCpJDeFSXa2++hRsl'
 
-AWS_STORAGE_BUCKET_NAME = 'chatapp312'
+# AWS_STORAGE_BUCKET_NAME = 'chatapp312'

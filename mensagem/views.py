@@ -59,14 +59,14 @@ def conversa(request, idConversa):
         return redirect('conversa', idConversa)
     form = MensagemForm()
     mensagens = Mensagem.objects.filter(conversa=conversa)
-    ultima_msg_id = Mensagem.objects.filter(conversa=conversa).last().id
-    print(ultima_msg_id)
+    #ultima_msg_id = Mensagem.objects.filter(conversa=conversa).last().id
+    #print(ultima_msg_id)
     c = {
         'mensagens' : mensagens,
         'form' : form,
         'user' : request.user,
         'conversa' : conversa,
-        'ultima_msg_id' : ultima_msg_id,
+        #'ultima_msg_id' : ultima_msg_id,
     }
     return render(request, 'mensagem/conversa/conversa.html', c)
 
